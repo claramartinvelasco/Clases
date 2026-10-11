@@ -15,6 +15,7 @@ public class Equals {
 		// Wrappers: Double, Integer, Long (pasa igual)
 		System.out.println(s1==s2);
 		System.out.println(s1.equals(s2));
+		
 	}
 
 }
