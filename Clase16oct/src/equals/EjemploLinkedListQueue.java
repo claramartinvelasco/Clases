@@ -23,6 +23,7 @@ public class EjemploLinkedListQueue {
 		System.out.println(cola);
 		System.out.println(cola.poll());
 		System.out.println(cola);
+		// en el queue no se puede usar get()
 
 	}
 
