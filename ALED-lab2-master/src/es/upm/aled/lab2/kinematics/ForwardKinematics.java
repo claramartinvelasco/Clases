@@ -26,28 +26,36 @@ public class ForwardKinematics {
 	 */
 	// Public method: returns the root of the position tree
 	public static Node computePositions(Segment root, double originX, double originY) {
-		return computePositions(root, originX, originY, 0);
+		return computePositions(root, originX, originY, 0.0); // dice que el ángulo al principio vale 0
 	}
 
 	// Private helper method that implements the recursive algorithm
+	
 	private static Node computePositions(Segment link, double baseX, double baseY, double accumulatedAngle) {
 		// TODO: Implemente este método
-		if(link.getChildren().size()==0) {
-			Node nodeBase= new Node (baseX, baseY);
-			return nodeBase;
-			// link.getChildren().add(nodeBase); AÑADIR EL NODO A LA LISTA	
-		}
+		long startTime = System.nanoTime();
+		accumulatedAngle+= link.getAngle() ;
 		double x = baseX + link.getLength()* Math.cos(accumulatedAngle);
 		double y = baseY + link.getLength()* Math.sin(accumulatedAngle);
+		Node node = new Node(x,y);
 		
-
-		for (Segment child:link.getChildren()) {
-			accumulatedAngle = accumulatedAngle + child.getAngle() ;
-			computePositions(child);
-			
+	
+		if(link.getChildren().size()==0) {
+			long runningTime = System.nanoTime() - startTime;
+			System.out.println("Tiempo de computePositions para un segmento con "
+			+ link.getChildren().size() + " hijos: "
+			+ runningTime + " nanosegundos");
+			return node;
 		}
-			
-
+		
+		for (Segment child:link.getChildren()) {
+			node.addChild(computePositions(child, x, y, accumulatedAngle));	
+		}
+		long runningTime = System.nanoTime() - startTime;
+		System.out.println("Tiempo de computePositions para un segmento con "
+		+ link.getChildren().size() + " hijos: "
+		+ runningTime + " nanosegundos");
+		return node;
 	}
 
 	

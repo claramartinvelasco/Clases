@@ -37,9 +37,9 @@ public class Node {
 	}
 
 	/**
-	 * Returns the X coordinate.
+	 * Returns the Y coordinate.
 	 * 
-	 * @return The X coordinate.
+	 * @return The Y coordinate.
 	 */
 	public double getY() {
 		return y;
