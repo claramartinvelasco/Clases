@@ -57,6 +57,8 @@ public class Trabajador extends Thread {
         Trabajador h1 = new Trabajador("H1", martillo, destornillador, cerrojo);
         Trabajador h2 = new Trabajador("H2", destornillador, martillo, cerrojo);
 
+        
+        
         h1.start();
         h2.start();
     }
