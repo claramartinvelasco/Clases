@@ -1,5 +1,6 @@
 package es.upm.dit.aled.lab3.binary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,7 +80,85 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	@Override
 	public List<Integer> search(byte[] pattern) {
 		// TODO
-		return null;
+		int lo = 0;
+		int hi = this.suffixes.length;
+		boolean found = false;
+		int index = 0; 
+		List<Integer> lista = new ArrayList<Integer>();
+		while (!found && hi - lo > 1) {
+			int m = (lo+hi)/2;
+			int posSuffix = this.suffixes[m].suffixIndex; 
+			while(posSuffix+index < content.length && index < pattern.length 
+					&& pattern[index]==content[posSuffix+index]) {
+				index++;
+				if(index == pattern.length) {
+					lista.add(posSuffix);
+					found = true;
+				}
+				else {
+					if (pattern [index] < content[posSuffix + index])
+						hi=m--;
+					else 
+						lo=m++;
+					index=0;
+				}
+			}
+		}
+		return lista;
+	}
+// Encontrar todas las coincidencias
+	public List<Integer> searchMejorado(byte[] pattern) {
+		// TODO
+		int lo = 0;
+		int hi = this.suffixes.length;
+		boolean found = false;
+		int index = 0; 
+		List<Integer> lista = new ArrayList<Integer>();
+		while (!found && hi - lo > 1) {
+			int m = (lo+hi)/2;
+			int posSuffix = this.suffixes[m].suffixIndex; 
+			while(posSuffix+index < content.length && index < pattern.length 
+					&& pattern[index]==content[posSuffix+index]) {
+				index++;
+				if(index == pattern.length) {
+					lista.add(posSuffix);
+					found = true;
+				// Recorro para atrás 
+				int i = 1;
+				do {
+					index =0;
+					posSuffix=this.suffixes[m-i].suffixIndex;
+					while(posSuffix+index<content.length && 
+							index < pattern.length && 
+							pattern[index]== content[posSuffix+index])
+						index++;
+					if(index== pattern.length)
+						lista.add(posSuffix);
+					i++;
+				} while(index==pattern.length);
+				// recorro para delante
+				do {
+					index =0;
+					posSuffix=this.suffixes[m+i].suffixIndex;
+					while(posSuffix+index<content.length && 
+							index < pattern.length && 
+							pattern[index]== content[posSuffix+index])
+						index++;
+					if(index== pattern.length)
+						lista.add(posSuffix);
+					i++;
+				} while(index==pattern.length);
+				}
+				else {
+					if (pattern [index] < content[posSuffix + index])
+						hi=m--;
+					else 
+						lo=m++;
+					index=0;
+				}
+			}
+		}
+		return lista;
 	}
 
 	public static void main(String[] args) {
